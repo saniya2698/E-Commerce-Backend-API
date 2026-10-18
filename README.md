@@ -1,199 +1,223 @@
-# E-COMMERCE BACKEND API
-## Project Documentation
+# E-Commerce Backend API
 
-### 1. Introduction
+A RESTful E-Commerce Backend API built using Python, Flask, and SQLite to manage users, products, shopping carts, and orders. This project demonstrates backend development concepts, database integration, CRUD operations, and API testing.
 
-The E-Commerce Backend API is a Python-based application developed using the Flask framework. It provides backend functionality for an online shopping system, allowing users to register, log in, view products, manage shopping cart items, and place orders.
+## Overview
 
-The application uses SQLite as its database and Flask-SQLAlchemy to interact with database tables. REST APIs allow clients to communicate with the backend by sending HTTP requests and receiving JSON responses.
+The E-Commerce Backend API provides the core functionality required for an online shopping application. It allows users to register and log in, manage products, add items to a shopping cart, calculate cart totals, and place orders.
 
-This project demonstrates the practical implementation of backend development concepts, database management, CRUD operations, request handling, and API testing.
+The application uses Flask to handle HTTP requests, Flask-SQLAlchemy for database operations, SQLite for data storage, and Werkzeug for password hashing.
 
-### 2. Project Objectives
+## Features
 
-The main objectives of this project are:
+- **User Management:** Register users and verify login credentials.
+- **Product Management:** Create, retrieve, update, and delete products.
+- **Shopping Cart:** Add products, view cart items, update quantities, and remove items.
+- **Order Processing:** Place orders, calculate order totals, and maintain order history.
+- **Stock Validation:** Check product availability before adding items to the cart or placing an order.
+- **Database Integration:** Store application data using SQLite and SQLAlchemy.
+- **Password Security:** Store hashed passwords instead of plain-text passwords.
+- **REST API Testing:** Test endpoints using Thunder Client.
 
-- To develop a backend system for an e-commerce application.
-- To implement user registration and login functionality.
-- To create APIs for adding, viewing, updating, and deleting products.
-- To provide shopping cart management functionality.
-- To calculate the total price of products added to the cart.
-- To process customer orders and maintain order details.
-- To store and retrieve application data using an SQLite database.
-- To understand REST API development and testing using Thunder Client.
+## Tech Stack
 
-### 3. Project Scope
+| Technology | Purpose |
+|---|---|
+| Python | Backend programming |
+| Flask | REST API development |
+| SQLite | Database storage |
+| Flask-SQLAlchemy | Database ORM |
+| Werkzeug | Password hashing and verification |
+| Thunder Client | API testing |
+| Visual Studio Code | Development environment |
 
-This project focuses on the backend operations required for a basic online shopping application. It manages users, products, shopping carts, and orders through dedicated API endpoints.
+## Project Structure
 
-The application can be tested using Thunder Client in Visual Studio Code. Users can send HTTP requests with JSON data to perform different operations and view the responses returned by the server.
+```text
+E-Commerce-Backend/
+│
+├── E-Commerce Backend.py
+├── requirements.txt
+├── README.md
+└── instance/
+    └── ecommerce_backend.db
+```
 
-The current version focuses on backend functionality and does not include a graphical shopping website or an integrated payment gateway.
+*Note: The database file is created when the application initializes, and its exact location depends on the SQLite configuration. The `instance/` folder is shown as an example.*
 
-### 4. Technologies Used
+## Installation and Setup
 
-**Python:** Used as the main programming language to implement application logic and backend operations.
+### 1. Clone the Repository
 
-**Flask:** A lightweight Python web framework used to create API routes and handle HTTP requests and responses.
+```bash
+git clone <your-repository-url>
+cd E-Commerce-Backend
+```
 
-**SQLite:** A file-based relational database used to store user, product, cart, and order information.
+Replace `<your-repository-url>` with your GitHub repository URL.
 
-**Flask-SQLAlchemy:** An Object Relational Mapper (ORM) that allows the application to work with database tables through Python classes and objects.
+### 2. Create a Virtual Environment (Recommended)
 
-**Werkzeug:** Used to generate password hashes during registration and verify passwords during login.
+```bash
+python -m venv venv
+```
 
-**Thunder Client:** A VS Code extension used to send API requests and test the responses.
+Activate it on Windows:
 
-**Visual Studio Code:** The development environment used to write, execute, and test the application.
+```bash
+venv\Scripts\activate
+```
 
-### 5. System Modules
+### 3. Install Dependencies
 
-#### 5.1 User Registration and Login
+```bash
+pip install -r requirements.txt
+```
 
-The authentication module allows new users to register by providing their name, email address, and password. The application checks whether the required fields are provided and whether the email address is already registered.
+If the requirements file is not available, install the main dependencies:
 
-Passwords are stored as hashes instead of plain text. During login, the application verifies the entered password against the stored hash and returns an appropriate response.
+```bash
+pip install flask flask-sqlalchemy
+```
 
-#### 5.2 Product Management
+### 4. Run the Application
 
-The product management module handles product-related operations. It allows products to be added with their name, price, and available quantity.
+```bash
+python "E-Commerce Backend.py"
+```
 
-Users can retrieve the list of products, update existing product details, and delete products through the corresponding API endpoints. These operations demonstrate CRUD functionality: Create, Read, Update, and Delete.
-
-#### 5.3 Shopping Cart Management
-
-The cart module allows a user to add products to a shopping cart by specifying the user ID, product ID, and quantity.
-
-The application checks whether the user and product exist and whether sufficient stock is available. Users can view their cart, update quantities, and remove items. The cart response also includes item totals and the overall cart amount.
-
-#### 5.4 Order Processing
-
-The order module processes orders based on the items in a user's shopping cart. It checks whether the cart contains items and whether the requested quantities are available.
-
-The application calculates the order total, reduces the available product stock, creates an order with its status, and clears the cart after successful order processing. Users can retrieve their order history through the order API.
-
-### 6. Database Design
-
-The application uses SQLite with four database models.
-
-**User Table**
-- `id`: Unique identifier for each user.
-- `name`: Name of the user.
-- `email`: User's email address, which must be unique.
-- `password`: Hashed user password.
-
-**Product Table**
-- `id`: Unique identifier for each product.
-- `name`: Product name.
-- `price`: Price of the product.
-- `quantity`: Available stock.
-
-**Cart Table**
-- `id`: Unique identifier for each cart item.
-- `user_id`: Identifier of the user who added the item.
-- `product_id`: Identifier of the selected product.
-- `quantity`: Number of units selected.
-
-**Order Table**
-- `id`: Unique identifier for each order.
-- `user_id`: Identifier of the user placing the order.
-- `total_amount`: Total order amount.
-- `status`: Current order status, initially set to "Placed".
-
-The database tables are defined using SQLAlchemy models. The `db.create_all()` method creates the required tables when the application initializes.
-
-### 7. API Endpoints
-
-| HTTP Method | Endpoint | Purpose |
-|---|---|---|
-| POST | `/register` | Register a new user |
-| POST | `/login` | Verify user login details |
-| GET | `/products` | Retrieve all products |
-| POST | `/products` | Add a new product |
-| PUT | `/products/<product_id>` | Update product details |
-| DELETE | `/products/<product_id>` | Delete a product |
-| POST | `/cart` | Add an item to the cart |
-| GET | `/cart/<user_id>` | Retrieve a user's cart |
-| PUT | `/cart/<cart_id>` | Update cart quantity |
-| DELETE | `/cart/<cart_id>` | Remove a cart item |
-| POST | `/orders` | Create an order |
-| GET | `/orders/<user_id>` | Retrieve a user's orders |
-
-### 8. Application Workflow
-
-The application follows this general workflow:
-
-1. The Flask application starts and initializes the database tables.
-2. A user registers using the registration API.
-3. The user logs in using their email and password.
-4. Products are added to the database and retrieved through the product APIs.
-5. A user adds selected products to the shopping cart.
-6. The cart API calculates the total amount based on product prices and quantities.
-7. The order API validates stock, calculates the order total, creates the order, updates product stock, and clears the cart.
-8. The user retrieves the order details using the order history API.
-
-### 9. Installation and Execution
-
-**Step 1: Install the required packages**
-
-Open the VS Code terminal and execute:
-
-`pip install flask flask-sqlalchemy`
-
-**Step 2: Run the application**
-
-If the Python file is named `E-Commerce Backend.py`, execute:
-
-`python "E-Commerce Backend.py"`
-
-**Step 3: Verify the server**
-
-Open the following URL in a browser:
+The local development server will be available at:
 
 `http://127.0.0.1:5000`
 
-A JSON message confirms that the backend API is running.
+Open the URL in a browser to verify that the API is running.
 
-**Step 4: Test the APIs**
+## API Endpoints
 
-Open Thunder Client in VS Code. Select the required HTTP method, enter the endpoint URL, provide JSON data where necessary, and click Send to view the response.
+### Authentication
 
-### 10. Testing
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/register` | Register a new user |
+| POST | `/login` | Verify login credentials |
 
-The application can be tested using Thunder Client by sending requests to each endpoint.
+### Product Management
 
-The following test scenarios should be checked:
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/products` | Retrieve all products |
+| POST | `/products` | Add a product |
+| PUT | `/products/<product_id>` | Update product details |
+| DELETE | `/products/<product_id>` | Delete a product |
 
-- Register a user with valid details.
-- Attempt registration with an already registered email.
-- Log in with correct and incorrect credentials.
-- Add a product and retrieve the product list.
-- Update and delete an existing product.
-- Add a valid product to the cart.
-- Test invalid user IDs, product IDs, and quantities.
-- Verify cart totals for different quantities.
-- Place an order when stock is available.
-- Confirm that stock decreases and the cart is cleared after an order.
-- Retrieve order history for a user.
+### Shopping Cart
 
-The actual test results should be recorded after running each request in Thunder Client.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/cart` | Add a product to the cart |
+| GET | `/cart/<user_id>` | View a user's cart |
+| PUT | `/cart/<cart_id>` | Update cart quantity |
+| DELETE | `/cart/<cart_id>` | Remove a cart item |
 
-### 11. Limitations
+### Orders
 
-- The application does not currently include a graphical frontend.
-- Online payment processing is not implemented.
-- Login does not issue an authentication token or establish an authenticated session.
-- User-specific cart and order endpoints do not fully enforce authorization.
-- The application uses a local SQLite database, making it more suitable for learning and demonstration than large-scale deployment.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/orders` | Place an order |
+| GET | `/orders/<user_id>` | Retrieve a user's orders |
 
-### 12. Future Enhancements
+## Example API Requests
 
-The project can be improved by adding a responsive frontend, secure token-based authentication, role-based access control, product search and categories, payment gateway integration, order cancellation, and more detailed order tracking.
+### Register a User
 
-A production version should also include stronger input validation, improved error handling, database relationship constraints, and appropriate security controls.
+**POST** `/register`
 
-### 13. Conclusion
+```json
+{
+  "name": "Test User",
+  "email": "testuser@example.com",
+  "password": "your-password"
+}
+```
 
-The E-Commerce Backend API provides a practical introduction to building REST APIs using Python and Flask. It demonstrates user registration and login, product management, shopping cart operations, order processing, and database integration using SQLite and Flask-SQLAlchemy.
+### Add a Product
 
-Through this project, fundamental backend development skills can be practiced, including HTTP methods, JSON communication, CRUD operations, password hashing, database handling, and API testing. The project can serve as a foundation for developing a more complete and secure e-commerce application in the future.
+**POST** `/products`
+
+```json
+{
+  "name": "Laptop",
+  "price": 55000,
+  "quantity": 10
+}
+```
+
+### Add a Product to the Cart
+
+**POST** `/cart`
+
+```json
+{
+  "user_id": 1,
+  "product_id": 1,
+  "quantity": 2
+}
+```
+
+Use the actual user and product IDs returned by your API.
+
+### Place an Order
+
+**POST** `/orders`
+
+```json
+{
+  "user_id": 1
+}
+```
+
+The order is created from the user's cart, provided the cart contains valid items and sufficient stock is available.
+
+## Database Models
+
+The application uses four SQLAlchemy models:
+
+- **User:** Stores user details and hashed passwords.
+- **Product:** Stores product names, prices, and available stock.
+- **Cart:** Stores selected products and quantities for each user.
+- **Order:** Stores order totals and order status.
+
+## Testing
+
+The API endpoints can be tested using Thunder Client in Visual Studio Code.
+
+Recommended test cases include:
+
+- Registering a new user and testing duplicate email registration.
+- Testing valid and invalid login credentials.
+- Adding, retrieving, updating, and deleting products.
+- Adding products to the cart and checking total amounts.
+- Testing invalid product IDs and insufficient stock.
+- Placing orders and verifying stock updates.
+- Retrieving order history.
+
+## Limitations
+
+- No frontend interface is included.
+- Payment gateway integration is not implemented.
+- Token-based authentication and complete authorization are not implemented.
+- The application is designed as a learning project and requires additional security controls before production use.
+
+## Learning Outcomes
+
+This project provides practical experience with Python backend development, REST APIs, HTTP methods, JSON requests and responses, database operations, CRUD functionality, password hashing, and API testing.
+
+## Author
+
+**Python Backend Development Project**
+
+Developed as a practical project to explore Flask, SQLite, and RESTful API development.
+
+---
+
+*If you find this project useful for learning, feel free to explore the code and extend its functionality.*
